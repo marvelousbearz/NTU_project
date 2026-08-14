@@ -48,3 +48,5 @@ Recall=cross_val_score(RF_CV,X_pseudo_train_resampled,y_pseudo_train_resampled,c
 print(f"the recall of Random_Forest is:\n{Recall}")
 print(f"the average of recall is:\n{Recall.mean():.4f}")
 
+import joblib
+joblib.dump(RF,'RandomF.plk')
