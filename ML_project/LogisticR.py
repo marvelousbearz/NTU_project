@@ -27,11 +27,17 @@ X_pseudo_train_resampled,y_pseudo_train_resampled=sm.fit_resample(X_pseudo_train
 print(f"平衡前流失/未流失的比例为:{y_pseudo_train.value_counts(normalize=True)}")
 print(f"平衡后流失/未流失的比例为:{y_pseudo_train_resampled.value_counts(normalize=True)}")
 
+from sklearn.preprocessing import StandardScaler
+scaler=StandardScaler()
+X_pseudo_train_scaled=scaler.fit_transform(X_pseudo_train_resampled)
+X_pseudo_test_scaled=scaler.transform(X_pseudo_test)
+
+
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score,classification_report,confusion_matrix
 model_LR=LogisticRegression(random_state=42,max_iter=1000,solver='saga')
-model_LR.fit(X_pseudo_train_resampled,y_pseudo_train_resampled)
-y_pred=model_LR.predict(X_pseudo_test)
+model_LR.fit(X_pseudo_train_scaled,y_pseudo_train_resampled)
+y_pred=model_LR.predict(X_pseudo_test_scaled)
 accuracy=accuracy_score(y_pred,y_pseudo_test)
 print(f"准确率是:{accuracy:.4f}")
 print(f"分类报告如下所示:\n{classification_report(y_pred,y_pseudo_test)}")
@@ -46,11 +52,11 @@ plt.show()
 
 from sklearn.model_selection import cross_val_score
 LR_CV=LogisticRegression(random_state=42,max_iter=1000,solver='saga')
-Accuracy_score=cross_val_score(LR_CV,X_pseudo_train_resampled,y_pseudo_train_resampled,cv=5,scoring='accuracy')
+Accuracy_score=cross_val_score(LR_CV,X_pseudo_train_scaled,y_pseudo_train_resampled,cv=5,scoring='accuracy')
 print(f"F-fold得到的准确率是:\n{Accuracy_score}")
 print(f"F-fold得到的准确率平均值是:\n{Accuracy_score.mean():.4f}")
 
-Recall_score=cross_val_score(LR_CV,X_pseudo_train_resampled,y_pseudo_train_resampled,cv=5,scoring='recall')
+Recall_score=cross_val_score(LR_CV,X_pseudo_train_scaled,y_pseudo_train_resampled,cv=5,scoring='recall')
 print(f"F-fold得到的Recall结果是:\n{Recall_score}")
 print(f"F-fold得到的Recall平均值是:\n{Recall_score.mean():.4f}")
 
