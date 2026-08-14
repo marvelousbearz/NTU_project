@@ -47,3 +47,4 @@ print(f"the average of accuracy score is:\n{Accuracy_score.mean():.4f}")
 Recall=cross_val_score(RF_CV,X_pseudo_train_resampled,y_pseudo_train_resampled,cv=5,scoring='recall')
 print(f"the recall of Random_Forest is:\n{Recall}")
 print(f"the average of recall is:\n{Recall.mean():.4f}")
+
