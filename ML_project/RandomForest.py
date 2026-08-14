@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-df=pd.read_csv('机器学习/Customer-Churn-Records.csv')
+df=pd.read_csv('Customer-Churn-Records.csv')
 
 # 数据预处理
 df=df.drop(['RowNumber','Surname','CustomerId','Complain'],axis=1)
