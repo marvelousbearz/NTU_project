@@ -49,4 +49,4 @@ print(f"the recall of Random_Forest is:\n{Recall}")
 print(f"the average of recall is:\n{Recall.mean():.4f}")
 
 import joblib
-joblib.dump(RF,'RandomF.plk')
+joblib.dump(RF,'RandomF.pkl')
