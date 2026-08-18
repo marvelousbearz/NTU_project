@@ -50,3 +50,9 @@ print(f"the average of recall is:\n{Recall.mean():.4f}")
 
 import joblib
 joblib.dump(RF,'RandomF.pkl')
+
+
+X_test.to_csv('X_test_demo.csv', index=False)
+demo_data = X_test.copy()
+demo_data['Exited'] = y_test.values
+demo_data.to_csv('test_data_for_demo.csv', index=False)
