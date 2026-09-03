@@ -12,7 +12,6 @@ df=df.drop(['RowNumber','Surname','CustomerId','Complain'],axis=1)
 df['Gender']=df['Gender'].map({'Male':1,'Female':0})
 df=pd.get_dummies(df,columns=['Geography','Card Type'],drop_first=True)
 
-
 from sklearn.model_selection import train_test_split
 X=df.drop('Exited',axis=1)
 y=df['Exited']
