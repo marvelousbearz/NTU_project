@@ -109,4 +109,4 @@ if "prediction" in st.session_state:
     if user_question:
         with st.spinner("🤖 AI is analysing..."):
             ai_reply = ask_ai(user_question, context)
-        st.markdown(f"**🤖 AI reply: **\n\n{ai_reply}")
+        st.markdown(f"🤖 AI reply: \n\n{ai_reply}")

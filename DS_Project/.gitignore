@@ -1,2 +1,7 @@
 .vscode
 .DS_Store
+.conda/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+flight_server
