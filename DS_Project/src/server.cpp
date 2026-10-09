@@ -1,9 +1,3 @@
-// C++17 UDP server for the distributed flight information system.
-//
-// This implementation deliberately performs all marshalling by hand so that it
-// interoperates with the Python client without JSON, object serialization, RPC,
-// RMI, or a language-specific data format.
-
 #include <arpa/inet.h>
 #include <netinet/in.h>
 #include <sys/socket.h>

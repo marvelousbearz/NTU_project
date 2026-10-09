@@ -1,9 +1,3 @@
-"""Custom network-byte-order protocol used by both client and server.
-
-No object serializer, JSON encoder, or RPC framework is used. Every integer,
-floating-point value, and variable-length UTF-8 string is marshalled here.
-"""
-
 from __future__ import annotations
 
 import struct

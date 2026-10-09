@@ -1,5 +1,3 @@
-"""Flight domain model and its explicit binary representation."""
-
 from __future__ import annotations
 
 from dataclasses import dataclass
