@@ -6,8 +6,8 @@
 ## 1. Group information
 
 | Member name | Matriculation number | Responsibility | Contribution |
-|---|---|---|---:|
-| TODO | TODO | TODO | TODO% |
+| ----------- | -------------------- | -------------- | -----------: |
+| TODO        | TODO                 | TODO           |        TODO% |
 
 The contribution percentages must total 100%.
 
@@ -42,15 +42,15 @@ flight each on two other routes.
 
 Every datagram starts with this fixed 16-byte network-byte-order header:
 
-| Field | Size | Meaning |
-|---|---:|---|
-| Magic | 4 bytes | ASCII `FLIT` |
-| Version | 1 byte | Protocol version 1 |
-| Kind | 1 byte | request, reply, or callback |
-| Operation | 1 byte | operation code 1-6 |
-| Status | 1 byte | success or error category |
-| Request ID | 4 bytes | duplicate detection and reply matching |
-| Payload length | 4 bytes | exact number of following bytes |
+| Field          |    Size | Meaning                                |
+| -------------- | ------: | -------------------------------------- |
+| Magic          | 4 bytes | ASCII `FLIT`                         |
+| Version        |  1 byte | Protocol version 1                     |
+| Kind           |  1 byte | request, reply, or callback            |
+| Operation      |  1 byte | operation code 1-6                     |
+| Status         |  1 byte | success or error category              |
+| Request ID     | 4 bytes | duplicate detection and reply matching |
+| Payload length | 4 bytes | exact number of following bytes        |
 
 Unsigned integers and doubles use big-endian network order. Each UTF-8 string is
 encoded as a 2-byte unsigned byte length followed by exactly that many bytes.
