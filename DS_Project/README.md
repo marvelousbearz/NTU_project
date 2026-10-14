@@ -14,50 +14,103 @@
 
 ## 环境要求
 
-- 服务端：支持 C++17 的编译器，以及 `make`。
-- 客户端：Python 3.10 或更高版本。
-- 不需要任何第三方 C++ 或 Python 库。
+- macOS：使用受支持的 macOS 版本。
+- C++：需要支持 C++17 的编译器。Apple Command Line Tools 提供 Apple Clang 和 `make`。
+- Java 客户端：需要 JDK 11 或更新版本（需包含 `javac` 和 `java`）。
+- Python 客户端及测试：需要 Python 3.10 或更新版本。
+- 不需要任何第三方 C++、Java 或 Python 库。
 
-macOS 如果没有 C++ 编译器，可以先安装 Command Line Tools：
+### 在 macOS 上安装开发工具
+
+打开“终端”（Terminal），安装 Apple Command Line Tools：
 
 ```bash
 xcode-select --install
 ```
 
-## 编译 C++ 服务端
+按照提示完成安装。检查 `make` 和 C++ 编译器是否可用：
 
-在项目目录执行：
+```bash
+make --version
+c++ --version
+```
+
+安装 JDK 11 或更新版本。可以从 Oracle、Eclipse Temurin 等发行版安装。安装完成后，确认 `javac` 和 `java` 可从终端运行：
+
+```bash
+javac --version
+java --version
+```
+
+macOS 上的 Python 版本可能较旧；如果 `python3 --version` 显示低于 3.10，请安装更新的 Python 3。
+
+## 在 macOS 上编译
+
+在终端中进入项目的 `DS_Project` 目录。例如，如果项目位于“文稿”文件夹：
+
+```bash
+cd ~/Documents/NTU-AY2627-6103/NTU_project/DS_Project
+```
+
+编译服务端和所有客户端：
 
 ```bash
 make
 ```
 
-该命令会将 `src/server.cpp` 编译为可执行文件 `flight_server`。项目采用的等价编译命令为：
+`make` 会生成 C++ 服务端 `flight_server`、C++ 客户端 `flight_client`，以及 Java 客户端编译结果 `build/java/FlightClient.class`。
+
+如果只需要编译 Java 客户端，可执行：
 
 ```bash
-c++ -std=c++17 -O2 -Wall -Wextra -Wpedantic src/server.cpp -o flight_server
+make java-client
 ```
 
-## 本机运行
+如果终端提示找不到 `javac`，请检查 JDK 是否安装，以及 `javac --version` 是否能成功运行。只编译 C++ 客户端可执行 `make flight_client`；只编译服务端可执行 `make flight_server`。
 
-先启动编译好的 C++ 服务端：
+## 在 macOS 上运行
+
+在项目目录打开一个终端窗口，启动服务端：
 
 ```bash
 ./flight_server --host 0.0.0.0 --port 8888 --semantics at-most-once
 ```
 
-随后启动一个或多个 Python 客户端：
+保持服务端运行，再打开另一个终端窗口，在相同项目目录运行任意一个客户端：
 
 ```bash
 python3 src/client.py --host 127.0.0.1 --port 8888 --semantics at-most-once
 ```
 
+```bash
+./flight_client --host 127.0.0.1 --port 8888
+```
+
+```bash
+java -cp build/java FlightClient --host 127.0.0.1 --port 8888
+```
+
+客户端和服务端在同一台 Mac 上运行时，使用 `127.0.0.1`。若它们运行在不同电脑上，请把客户端命令中的地址替换为服务端 Mac 的 IP 地址，并确认网络及防火墙允许 UDP 8888 端口通信。
+
+运行自动测试：
+
+```bash
+make test
+```
+
+清除编译生成的文件：
+
+```bash
+make clean
+```
+
+## 在其他系统运行
+
 如果客户端和服务端运行在不同电脑上，请将 `127.0.0.1` 替换为服务端电脑的 IP
 地址，并在防火墙中允许 UDP 8888 端口的通信。
 
-服务端电脑只需要编译并运行 `flight_server`。客户端电脑需要 `src/client.py` 和
-`src/common/`，无需 C++ 编译器。完整回调演示建议使用三台电脑：一台运行 C++
-服务端，另外两台分别运行 Python 监控客户端和 Python 预订客户端。
+服务端电脑只需要编译并运行 `flight_server`。Python 客户端电脑需要 `src/client.py` 和
+`src/common/`，无需 C++ 编译器。完整回调演示建议使用三台电脑：一台运行 C++ 服务端，另外两台分别运行客户端监控和预订。
 
 ## 回调功能演示
 
@@ -106,8 +159,10 @@ make test
 
 - `src/server.cpp`：C++ UDP 服务端、C++ 端二进制编解码、六项服务、回调、丢包模拟和请求历史。
 - `src/client.py`：超时重试、回复匹配、回调等待循环和命令行界面。
+- `src/client.cpp`：C++ UDP 客户端。
+- `src/java/FlightClient.java`：Java UDP 客户端。
 - `src/common/message.py`：Python 客户端使用的协议头、枚举和二进制编解码器。
 - `src/common/flight.py`：Python 客户端使用的航班数据模型及反序列化实现。
-- `Makefile`：C++ 服务端编译和测试入口。
+- `Makefile`：服务端、客户端的编译及测试入口。
 - `tests/test_system.py`：Python 客户端与 C++ 服务端之间的跨语言集成测试。
 - `REPORT_DRAFT.md`：可用于撰写报告的设计说明和实验材料。
