@@ -5,3 +5,5 @@ __pycache__/
 *.py[cod]
 .pytest_cache/
 flight_server
+flight_client
+build/java/
