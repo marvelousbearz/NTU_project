@@ -36,6 +36,7 @@ class ReliableFlightClient:
         semantics: str = "at-most-once",
         timeout: float = 1.0,
         retries: int = 4,
+        drop_first: int = 0,
     ) -> None:
         if semantics not in {"at-least-once", "at-most-once"}:
             raise ValueError("unsupported invocation semantics")
@@ -45,6 +46,7 @@ class ReliableFlightClient:
         self.semantics = semantics
         self.timeout = timeout
         self.retries = retries
+        self.drop_first = drop_first
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.socket.settimeout(timeout)
         self._next_request_id = random.SystemRandom().randint(1, 0xFFFFFFFF)
@@ -81,6 +83,11 @@ class ReliableFlightClient:
                 self.socket.settimeout(remaining)
                 try:
                     data, sender = self.socket.recvfrom(65_507)
+                    if self.drop_first > attempt:
+                        print(f"Dropping request {request_id} (attempt {attempt})")
+                        raise TimeoutError(
+                            f"request {request_id} dropped intentionally (attempt {attempt})"
+                        )
                 except socket.timeout:
                     break
                 if sender != self.server_address:
@@ -282,6 +289,7 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--timeout", type=float, default=1.0)
     parser.add_argument("--retries", type=int, default=4)
+    parser.add_argument("--drop_first", type=int, default=0, help="number of initial requests to drop")
     return parser.parse_args()
 
 
@@ -293,6 +301,7 @@ def main() -> None:
         semantics=args.semantics,
         timeout=args.timeout,
         retries=args.retries,
+        drop_first=args.drop_first,
     ) as client:
         run_menu(client)
 
